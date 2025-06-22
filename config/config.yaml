@@ -1,0 +1,58 @@
+# LLM Medical Question-Answering Bias Analysis Configuration
+
+# Data Configuration
+data:
+  datathon_dataset_name: "mdplus/Datathon2024"
+  default_track: "Medical Education"
+  required_columns: ["question", "options", "answer_idx"]
+  text_column: "question"
+
+# LLM Configuration
+llm:
+  model_id: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo"
+  max_retries: 3
+  temperature: 0.1
+  max_tokens: 10
+  batch_size: 50
+  valid_answer_options: ["A", "B", "C", "D", "E"]
+
+# Feature Engineering
+features:
+  extract_age: true
+  extract_gender: true
+  age_categories:
+    "Toddler": [0, 3]
+    "Child": [3, 18]
+    "Adult": [18, 60]
+    "Senior": [60, 150]
+
+# Analysis Configuration
+analysis:
+  significance_level: 0.05
+  demographic_columns: ["Gender", "Age_Category"]
+  correctness_column: "correct"
+
+# Visualization Configuration
+visualization:
+  figure_size: [10, 7]
+  dpi: 300
+  format: "png"
+
+# Output Configuration
+output:
+  raw_data_dir: "data/raw"
+  processed_data_dir: "data/processed"
+  results_dir: "data/processed/results"
+  plots_dir: "data/processed/results/plots"
+  llm_responses_file: "llm_responses.csv"
+  plot_prefix: "llm_bias_analysis"
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(levelname)s - %(message)s"
+  file: null  # Set to null for console-only logging
+
+# Environment Variables
+environment:
+  together_api_key: "${TOGETHER_API_KEY}" 
